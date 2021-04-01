@@ -51,14 +51,19 @@ void _ui_drawMainTop()
     gfx_print(layout.top_pos, clock_buf, layout.top_font, TEXT_ALIGN_CENTER,
               color_white);
 #endif
-
-    // Print battery icon on top bar, use 4 px padding
+    // If the radio has no built-in battery, print input voltage
+#ifdef BAT_NONE
+    char volt_buf[6] = "";
+    snprintf(volt_buf, sizeof(volt_buf), "%.1fV", last_state.v_bat);
+    gfx_print(layout.top_pos, volt_buf, layout.top_font, TEXT_ALIGN_RIGHT, color_white);
+#else
+    // Otherwise print battery icon on top bar, use 4 px padding
     uint16_t bat_width = SCREEN_WIDTH / 9;
     uint16_t bat_height = layout.top_h - (layout.status_v_pad * 2);
     point_t bat_pos = {SCREEN_WIDTH - bat_width - layout.horizontal_pad,
                        layout.status_v_pad};
     gfx_drawBattery(bat_pos, bat_width, bat_height, last_state.charge);
-
+#endif
     // Print radio mode on top bar
     char mode[4] = "";
     switch(last_state.channel.mode)

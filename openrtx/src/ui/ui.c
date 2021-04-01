@@ -707,6 +707,7 @@ void ui_saveState()
 
 void ui_updateFSM(event_t event, bool *sync_rtx)
 {
+#ifndef BAT_NONE
     // The volume knob has been set to OFF, shutdown the radio
     if(state.v_bat <= 0)
     {
@@ -714,7 +715,7 @@ void ui_updateFSM(event_t event, bool *sync_rtx)
         platform_terminate();
         return;
     }
-
+#endif
     // Check if battery has enough charge to operate.
     // Check is skipped if there is an ongoing transmission, since the voltage
     // drop caused by the RF PA power absorption causes spurious triggers of
